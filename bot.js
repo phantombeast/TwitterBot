@@ -1,4 +1,5 @@
 //console.log('hello');
+
 var Twit=require('twit');
 var config=require('./config');
 var T = new Twit(config);
@@ -7,26 +8,65 @@ var T = new Twit(config);
 var stream=T.stream('user');
 
 
+//if someone follows you then use follow
+//stream.on('follow', followed);
 
-stream.on('follow', followed);
+// function followed(eventMsg){
+//
+//     console.log('Somenone Followed You ');
+//
+//     var name=eventMsg.source.name;
+//     var screenName=eventMsg.source.screen_name;
+//
+//     tweetIt('.@' + screenName + "Hey..What's Up!!" + out.value.joke);
+// }
 
-function followed(eventMsg){
 
-    console.log('Somenone Followed You ');
+// if someone tweets with your name then use tweet
 
-    var name=eventMsg.source.name;
-    var screenName=eventMsg.source.screen_name;
+stream.on('tweet', tweetEvent);
 
-    tweetIt('.@' + screenName + "Hey..What's Up!!");
+function tweetEvent(eventMsg) {
+
+    console.log('It started');
+    // to check get the details of the user who has tweeted and store it in a file
+    // var fs=require('fs');
+    //
+    // var json=JSON.stringify(eventMsg, null, 2);
+    //
+    // fs.writeFile('tweet.json', json);
+
+
+    var replyto=eventMsg.in_reply_to_screename;
+    var text=eventMsg.text;
+
+    var from=eventMsg.user.screen_name;
+
+  //  var id=eventMsg.value.joke;
+
+    console.log(replyto + ' ' + from);
+
+   // console.log(id);
+
+
+    if(replyto == 'rajpalpulit31'){
+
+        var newtweet= '@' + from + 'thank you for tweeting me';
+
+        tweetIt(newtweet)
+    }
+
+
 }
+
 
 
 
 
 function tweetIt(txt) {
 
-   // var rand=Math.floor(Math.random()*100);
 
+   // x=out.value.joke;
     var tweet={
         status: txt
     }
@@ -61,3 +101,5 @@ function tweetIt(txt) {
 //         console.log(tweets[i].text);
 //     }
 // }
+
+
